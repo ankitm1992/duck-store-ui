@@ -1,8 +1,13 @@
 <main>
-    <h1 class="title">Duck Warehouse</h1>
+    <header class="page-header">
+        <div class="logo">
+            <mat-icon>warehouse</mat-icon>
+        </div>
+        <h1>Duck Warehouse</h1>
+    </header>
 
     <div class="toolbar">
-        <button matButton="filled" (click)="openAdd()">Add duck</button>
+        <button matButton="filled" (click)="openAdd()">Add Duck</button>
     </div>
 
     @if (formOpen()) {

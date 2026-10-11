@@ -1,12 +1,21 @@
-<h2 mat-dialog-title>{{ data.title }}</h2>
+<div class="top-bar"></div>
+
+<div class="header">
+  <div class="icon-tile">
+    <mat-icon>delete_outline</mat-icon>
+  </div>
+  <h2 mat-dialog-title>{{ data.title }}</h2>
+</div>
 
 <mat-dialog-content>
   <p>{{ data.message }}</p>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button matButton [mat-dialog-close]="false">{{ data.cancelText ?? 'Cancel' }}</button>
-  <button matButton="filled" class="confirm" [mat-dialog-close]="true" cdkFocusInitial>
+  <button matButton="outlined" [mat-dialog-close]="false">
+    {{ data.cancelText ?? 'Cancel' }}
+  </button>
+  <button matButton="filled" class="btn-danger" [mat-dialog-close]="true" cdkFocusInitial>
     {{ data.confirmText ?? 'Confirm' }}
   </button>
 </mat-dialog-actions>

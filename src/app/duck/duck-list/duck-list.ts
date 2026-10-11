@@ -10,10 +10,11 @@ import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
 import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
 import { DuckPaginatorIntl } from './duck-paginator-intl';
 import { MatButton } from '@angular/material/button';
+import { MatIcon } from '@angular/material/icon';
 
 @Component({
   selector: 'app-duck-list',
-  imports: [CurrencyPipe, DuckForm,MatPaginator,MatButton],
+  imports: [CurrencyPipe, DuckForm,MatPaginator,MatButton,MatIcon],
   providers: [{ provide: MatPaginatorIntl, useClass: DuckPaginatorIntl }],
   templateUrl: './duck-list.html',
   styleUrl: './duck-list.css',
@@ -112,15 +113,15 @@ toggleSort(): void {
   }
 
   remove(duck: Duck): void {
-  this.dialog
-    .open(ConfirmDialog, {
-      width: '400px',
-      data: {
-        title: 'Delete !',
-        message: `Delete the ${duck.color} ${duck.size} duck ?`,
-        confirmText: 'Delete',
-      },
-    })
+this.dialog.open(ConfirmDialog, {
+  width: '400px',
+  panelClass: 'square-dialog',
+  data: {
+    title: 'Delete !',
+    message: `Delete the ${duck.color}, ${duck.size} duck?`,
+    confirmText: 'Delete',
+  },
+})
     .afterClosed()
     .pipe(filter(confirmed => confirmed === true))
     .subscribe(() => {
