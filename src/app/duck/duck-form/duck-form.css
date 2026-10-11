@@ -25,3 +25,6 @@ label {
   gap: 8px;
   margin-top: 12px;
 }
+mat-form-field {
+  width: 100%;
+}

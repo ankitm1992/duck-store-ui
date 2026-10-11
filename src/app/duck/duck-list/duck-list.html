@@ -1,9 +1,9 @@
 <main>
-<h1 class="title">Duck Warehouse</h1>
+    <h1 class="title">Duck Warehouse</h1>
 
-<div class="toolbar">
-  <button class="primary" (click)="openAdd()">Add duck</button>
-</div>
+    <div class="toolbar">
+        <button matButton="filled" (click)="openAdd()">Add duck</button>
+    </div>
 
     @if (formOpen()) {
     <app-duck-form [duck]="editing()" (saved)="onSaved()" (cancelled)="closeForm()" />
@@ -19,9 +19,11 @@
                 <th>Sr. No</th>
                 <th>Color</th>
                 <th>Size</th>
-                <th>Price</th>
-                <th class="sortable" (click)="toggleSort()" title="Click to change sort order">
-                    Quantity {{ direction() === 'ASC' ? '▲' : '▼' }}
+                <th class="sortable" (click)="sortOn('price')" title="Sort by price">
+                    Price {{ arrow('price') }}
+                </th>
+                <th class="sortable" (click)="sortOn('quantity')" title="Sort by quantity">
+                    Quantity {{ arrow('quantity') }}
                 </th>
                 <th>Actions</th>
             </tr>
@@ -29,14 +31,14 @@
         <tbody>
             @for (d of ducks(); track d.id; let i = $index) {
             <tr>
-                <td>{{ page() * pageSize + i + 1 }}</td>
+                <td>{{ pageIndex() * pageSize() + i + 1 }}</td>
                 <td>{{ d.color }}</td>
                 <td>{{ d.size }}</td>
                 <td>{{ d.price | currency: 'USD' }}</td>
                 <td>{{ d.quantity }}</td>
-                <td>
-                    <button (click)="openEdit(d)">Edit</button>
-                    <button class="danger" (click)="remove(d)">Delete</button>
+                <td class="actions">
+                    <button matButton="outlined" class="compact" (click)="openEdit(d)">Edit</button>
+                    <button matButton="outlined" class="compact delete" (click)="remove(d)">Delete</button>
                 </td>
             </tr>
             } @empty {
@@ -46,9 +48,6 @@
             }
         </tbody>
     </table>
-    <div class="pager">
-        <button (click)="goTo(page() - 1)" [disabled]="page() === 0">Previous</button>
-        <span>Page {{ page() + 1 }}</span>
-        <button (click)="goTo(page() + 1)" [disabled]="!hasNext()">Next</button>
-    </div>
+    <mat-paginator [length]="length()" [pageIndex]="pageIndex()" [pageSize]="pageSize()"
+        [pageSizeOptions]="pageSizeOptions" (page)="onPage($event)" />
 </main>

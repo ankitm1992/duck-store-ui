@@ -57,3 +57,20 @@ td button + button {
   padding: 24px;
 }
 .pager { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 12px; }
+
+.compact {
+  --mat-button-outlined-container-height: 32px;
+}
+
+.delete {
+  --mat-button-outlined-label-text-color: #b3261e;
+  --mat-button-outlined-outline-color: #e3b4b0;
+}
+
+.actions {
+  white-space: nowrap;
+}
+
+.actions button + button {
+  margin-left: 8px;
+}

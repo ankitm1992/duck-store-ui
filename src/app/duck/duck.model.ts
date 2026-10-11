@@ -16,4 +16,6 @@ export interface DuckInput {
   quantity: number;
 }
 
-export type SortDirection = 'asc' | 'desc';
+export type SortDirection = 'ASC' | 'DESC';
+
+export type SortField = 'quantity' | 'price';

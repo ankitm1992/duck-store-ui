@@ -1,16 +1,20 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
+import { Component, OnInit, computed, inject, signal } from '@angular/core';
 import { CurrencyPipe } from '@angular/common';
 import { HttpErrorResponse } from '@angular/common/http';
-import { Duck, SortDirection } from '../duck.model';
+import { Duck, SortDirection, SortField } from '../duck.model';
 import { DuckService } from '../duck.service';
 import { DuckForm } from '../duck-form/duck-form';
 import { MatDialog } from '@angular/material/dialog';
 import { filter } from 'rxjs';
 import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
+import { MatPaginator, MatPaginatorIntl, PageEvent } from '@angular/material/paginator';
+import { DuckPaginatorIntl } from './duck-paginator-intl';
+import { MatButton } from '@angular/material/button';
 
 @Component({
   selector: 'app-duck-list',
-  imports: [CurrencyPipe, DuckForm],
+  imports: [CurrencyPipe, DuckForm,MatPaginator,MatButton],
+  providers: [{ provide: MatPaginatorIntl, useClass: DuckPaginatorIntl }],
   templateUrl: './duck-list.html',
   styleUrl: './duck-list.css',
 })
@@ -19,43 +23,71 @@ export class DuckList implements OnInit {
   private readonly dialog = inject(MatDialog);
 
   readonly ducks = signal<Duck[]>([]);
-  readonly page = signal(0);
-  readonly pageSize = 10;
+
+  readonly pageSizeOptions = [10, 20, 50];
+  readonly pageIndex = signal(0);
+  readonly pageSize = signal(10);
   readonly hasNext = signal(false);
+  readonly sortBy = signal<SortField>('quantity');
   readonly direction = signal<SortDirection>('DESC');
+
+
   readonly formOpen = signal(false);
   readonly editing = signal<Duck | null>(null);
   readonly error = signal('');
+
+  readonly length = computed(() => {
+  const loaded = this.pageIndex() * this.pageSize() + this.ducks().length;
+  return loaded + (this.hasNext() ? 1 : 0);
+});
 
   ngOnInit(): void {
     this.load();
   }
 
 load(): void {
-  this.service.list(this.page(), this.pageSize, 'quantity', this.direction()).subscribe({
-   next: items => {
-      // deleted the last row of a later page: step back instead of showing an empty page
-      if (items.length === 0 && this.page() > 0) {
-        this.page.update(p => p - 1);
+  this.service.list(this.pageIndex(), this.pageSize(), this.sortBy(), this.direction()).subscribe({
+    next: items => {
+      if (items.length === 0 && this.pageIndex() > 0) {
+        this.pageIndex.update(p => p - 1);
         this.load();
         return;
       }
       this.ducks.set(items);
-      this.hasNext.set(items.length === this.pageSize);
+      this.hasNext.set(items.length === this.pageSize());
       this.error.set('');
     },
     error: () => this.error.set('Could not load ducks. Server Error !'),
   });
 }
 
-toggleSort(): void {
-  this.direction.update(d => (d === 'ASC' ? 'DESC' : 'ASC'));
-  this.page.set(0);
+sortOn(field: SortField): void {
+  if (this.sortBy() === field) {
+    this.direction.update(d => (d === 'ASC' ? 'DESC' : 'ASC'));
+  } else {
+    this.sortBy.set(field);
+    this.direction.set('ASC');
+  }
+  this.pageIndex.set(0);
   this.load();
 }
 
-goTo(page: number): void {
-  this.page.set(page);
+arrow(field: SortField): string {
+  if (this.sortBy() !== field) {
+    return '';
+  }
+  return this.direction() === 'ASC' ? '▲' : '▼';
+}
+
+onPage(event: PageEvent): void {
+  this.pageIndex.set(event.pageIndex);
+  this.pageSize.set(event.pageSize);
+  this.load();
+}
+
+toggleSort(): void {
+  this.direction.update(d => (d === 'ASC' ? 'DESC' : 'ASC'));
+  this.pageIndex.set(0);
   this.load();
 }
 
@@ -84,7 +116,7 @@ goTo(page: number): void {
     .open(ConfirmDialog, {
       width: '400px',
       data: {
-        title: 'Delete duck',
+        title: 'Delete !',
         message: `Delete the ${duck.color} ${duck.size} duck ?`,
         confirmText: 'Delete',
       },

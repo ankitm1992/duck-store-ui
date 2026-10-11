@@ -1,13 +1,17 @@
 import { Component, computed, effect, inject, input, output, signal } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { HttpErrorResponse } from '@angular/common/http';
+import { MatFormField, MatLabel, MatError } from '@angular/material/form-field';
+import { MatSelect, MatOption } from '@angular/material/select';
+import { MatInput } from '@angular/material/input'; 
 import { COLORS, Duck, SIZES } from '../duck.model';
 import { DuckService } from '../duck.service';
+import { MatButton } from '@angular/material/button';
 
 /** One form for both adding (duck = null) and editing (color and size are read-only). */
 @Component({
   selector: 'app-duck-form',
-  imports: [ReactiveFormsModule],
+  imports: [ReactiveFormsModule,MatFormField, MatLabel, MatError, MatSelect, MatOption, MatInput],
   templateUrl: './duck-form.html',
   styleUrl: './duck-form.css',
 })

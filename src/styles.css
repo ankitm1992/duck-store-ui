@@ -1,4 +1,3 @@
-/* You can add global styles to this file, and also import other style files */
 body {
   font-family: system-ui, sans-serif;
   margin: 0;
@@ -6,7 +5,12 @@ body {
   color: #1d2433;
 }
 
-button {
+.error {
+  color: #b3261e;
+  font-size: 0.85rem;
+}
+
+button:not([matButton]) {
   cursor: pointer;
   border: 1px solid #c3c9d4;
   background: #fff;
@@ -26,7 +30,7 @@ button.danger {
   border-color: #e3b4b0;
 }
 
-button:disabled {
+button:not([matButton]):disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
@@ -39,7 +43,10 @@ select {
   font: inherit;
 }
 
-.error {
-  color: #b3261e;
-  font-size: 0.85rem;
+:root {
+  --mat-dialog-container-shape: 5px;
+  --mat-button-filled-container-shape: 5px;
+  --mat-button-outlined-container-shape: 5px;
+  --mat-button-text-container-shape: 5px;
+  --mat-button-tonal-container-shape: 5px;
 }
