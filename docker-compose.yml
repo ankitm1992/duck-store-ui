@@ -1,0 +1,15 @@
+services:
+  frontend:
+    build: .
+    container_name: duck-store-ui
+    ports:
+      - "4200:80"
+    environment:
+      BACKEND_URL: "http://duck-store-service:8080"
+      NGINX_ENVSUBST_FILTER: "BACKEND_URL"
+    networks:
+      - duckstore-net
+
+networks:
+  duckstore-net:
+    external: true
