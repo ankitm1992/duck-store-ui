@@ -1,0 +1,8 @@
+p {
+  margin: 0;
+}
+
+.confirm {
+  --mat-button-filled-container-color: #b3261e;
+  --mat-button-filled-label-text-color: #fff;
+}
