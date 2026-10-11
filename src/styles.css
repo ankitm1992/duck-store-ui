@@ -1,1 +1,45 @@
 /* You can add global styles to this file, and also import other style files */
+body {
+  font-family: system-ui, sans-serif;
+  margin: 0;
+  background: #f6f7f9;
+  color: #1d2433;
+}
+
+button {
+  cursor: pointer;
+  border: 1px solid #c3c9d4;
+  background: #fff;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font: inherit;
+}
+
+button.primary {
+  background: #f2b705;
+  border-color: #d9a400;
+  font-weight: 600;
+}
+
+button.danger {
+  color: #b3261e;
+  border-color: #e3b4b0;
+}
+
+button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+input,
+select {
+  padding: 7px;
+  border: 1px solid #c3c9d4;
+  border-radius: 6px;
+  font: inherit;
+}
+
+.error {
+  color: #b3261e;
+  font-size: 0.85rem;
+}
