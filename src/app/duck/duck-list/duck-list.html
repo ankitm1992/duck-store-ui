@@ -1,1 +1,53 @@
-<p>duck-list works!</p>
+<main>
+    <div class="toolbar">
+        <h1>Duck Warehouse</h1>
+        <button class="primary" (click)="openAdd()">Add duck</button>
+    </div>
+
+    @if (formOpen()) {
+    <app-duck-form [duck]="editing()" (saved)="onSaved()" (cancelled)="closeForm()" />
+    }
+
+    @if (error()) {
+    <p class="error">{{ error() }}</p>
+    }
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Color</th>
+                <th>Size</th>
+                <th>Price</th>
+                <th class="sortable" (click)="toggleSort()" title="Click to change sort order">
+                    Quantity {{ direction() === 'ASC' ? '▲' : '▼' }}
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @for (d of ducks(); track d.id) {
+            <tr>
+                <td>{{ d.id }}</td>
+                <td>{{ d.color }}</td>
+                <td>{{ d.size }}</td>
+                <td>{{ d.price | currency: 'USD' }}</td>
+                <td>{{ d.quantity }}</td>
+                <td>
+                    <button (click)="openEdit(d)">Edit</button>
+                    <button class="danger" (click)="remove(d)">Delete</button>
+                </td>
+            </tr>
+            } @empty {
+            <tr>
+                <td colspan="6" class="empty">No ducks in the warehouse yet.</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+    <div class="pager">
+        <button (click)="goTo(page() - 1)" [disabled]="page() === 0">Previous</button>
+        <span>Page {{ page() + 1 }}</span>
+        <button (click)="goTo(page() + 1)" [disabled]="!hasNext()">Next</button>
+    </div>
+</main>

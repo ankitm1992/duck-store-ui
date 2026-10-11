@@ -1,0 +1,54 @@
+main {
+  max-width: 860px;
+  margin: 32px auto;
+  padding: 0 16px;
+}
+
+h1 {
+  font-size: 1.6rem;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+th,
+td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: 1px solid #e8ebf0;
+}
+
+th {
+  background: #eef0f4;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+
+td button + button {
+  margin-left: 8px;
+}
+
+.empty {
+  text-align: center;
+  color: #667;
+  padding: 24px;
+}
+.pager { display: flex; justify-content: center; align-items: center; gap: 12px; margin-top: 12px; }
