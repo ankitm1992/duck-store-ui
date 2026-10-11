@@ -8,10 +8,15 @@ h1 {
   font-size: 1.6rem;
 }
 
+.title {
+  text-align: center;
+  font-size: 1.8rem;
+  margin: 0 0 24px;
+}
+
 .toolbar {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-end;
   margin-bottom: 12px;
 }
 

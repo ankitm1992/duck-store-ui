@@ -1,8 +1,9 @@
 <main>
-    <div class="toolbar">
-        <h1>Duck Warehouse</h1>
-        <button class="primary" (click)="openAdd()">Add duck</button>
-    </div>
+<h1 class="title">Duck Warehouse</h1>
+
+<div class="toolbar">
+  <button class="primary" (click)="openAdd()">Add duck</button>
+</div>
 
     @if (formOpen()) {
     <app-duck-form [duck]="editing()" (saved)="onSaved()" (cancelled)="closeForm()" />
@@ -15,7 +16,7 @@
     <table>
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Sr. No</th>
                 <th>Color</th>
                 <th>Size</th>
                 <th>Price</th>
@@ -26,9 +27,9 @@
             </tr>
         </thead>
         <tbody>
-            @for (d of ducks(); track d.id) {
+            @for (d of ducks(); track d.id; let i = $index) {
             <tr>
-                <td>{{ d.id }}</td>
+                <td>{{ page() * pageSize + i + 1 }}</td>
                 <td>{{ d.color }}</td>
                 <td>{{ d.size }}</td>
                 <td>{{ d.price | currency: 'USD' }}</td>

@@ -4,6 +4,9 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Duck, SortDirection } from '../duck.model';
 import { DuckService } from '../duck.service';
 import { DuckForm } from '../duck-form/duck-form';
+import { MatDialog } from '@angular/material/dialog';
+import { filter } from 'rxjs';
+import { ConfirmDialog } from '../confirm-dialog/confirm-dialog';
 
 @Component({
   selector: 'app-duck-list',
@@ -13,6 +16,7 @@ import { DuckForm } from '../duck-form/duck-form';
 })
 export class DuckList implements OnInit {
   private readonly service = inject(DuckService);
+  private readonly dialog = inject(MatDialog);
 
   readonly ducks = signal<Duck[]>([]);
   readonly page = signal(0);
@@ -76,15 +80,25 @@ goTo(page: number): void {
   }
 
   remove(duck: Duck): void {
-    if (!confirm(`Delete the ${duck.color} ${duck.size} duck (id ${duck.id})?`)) {
-      return;
-    }
-    this.service.remove(duck.id).subscribe({
-      next: () => this.load(),
-      error: (e: HttpErrorResponse) => {
-        this.error.set(e.error?.message ?? 'Delete failed.');
-        this.load();
+  this.dialog
+    .open(ConfirmDialog, {
+      width: '400px',
+      data: {
+        title: 'Delete duck',
+        message: `Delete the ${duck.color} ${duck.size} duck ?`,
+        confirmText: 'Delete',
       },
+    })
+    .afterClosed()
+    .pipe(filter(confirmed => confirmed === true))
+    .subscribe(() => {
+      this.service.remove(duck.id).subscribe({
+        next: () => this.load(),
+        error: (e: HttpErrorResponse) => {
+          this.error.set(e.error?.message ?? 'Delete failed.');
+          this.load();
+        },
+      });
     });
-  }
+}
 }
